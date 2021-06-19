@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 bg-blue-600 text-white rounded;
+  }
+}
+
+/* post css 가 이 파일을 보고 세줄을 tailwind가 갖고 있는 모든 클래스이름으로 바꿀것임 */
