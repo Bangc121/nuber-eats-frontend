@@ -1,9 +1,12 @@
 import { gql, useMutation } from "@apollo/client";
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { authToken, isLoggedInVar } from "../apollo";
 import { Button } from "../components/button";
 import { FormError } from "../components/form-error";
+import { LOCALSTORAGE_TOKEN } from "../constants";
 import nuberLogo from "../images/logo.svg";
 import {
   loginMutation,
@@ -39,8 +42,11 @@ export const Login = () => {
     const {
       login: { ok, token, error },
     } = data;
-    if (ok) {
+    if (ok && token) {
       console.log(token);
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      authToken(token);
+      isLoggedInVar(true);
     } else {
       if (error) {
       }
@@ -67,6 +73,9 @@ export const Login = () => {
   };
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
+      <Helmet>
+        <title>Login | Nuber Eats</title>
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <img src={nuberLogo} alt="logo" className="w-52 mb-10" />
         <h4 className="w-full font-medium text-left text-3xl mb-5">
@@ -79,6 +88,8 @@ export const Login = () => {
           <input
             {...register("email", {
               required: "Email is required",
+              pattern:
+                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             })}
             required
             name="email"
@@ -88,6 +99,9 @@ export const Login = () => {
           />
           {errors.email?.message && (
             <FormError errorMessage={errors.email?.message} />
+          )}
+          {errors.email?.type === "pattern" && (
+            <FormError errorMessage={"Please enter a vaild email"} />
           )}
           <input
             {...register("password", {
