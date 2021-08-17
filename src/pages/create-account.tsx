@@ -84,7 +84,7 @@ export const CreateAccount = () => {
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <img src={nuberLogo} alt="logo" className="w-52 mb-10" />
         <h4 className="w-full font-medium text-left text-3xl mb-5">
-          Let's get started
+          Let's get starteddddddd
         </h4>
         <form
           onSubmit={handleSubmit(onSubmit)}
